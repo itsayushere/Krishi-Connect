@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishi Connect</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 20V11"/>
+        <path d="M12 11C12 11 5 11.5 5 5C11.5 5 12 11 12 11Z"/>
+        <path d="M12 13C12 13 19 12.5 19 7C13 7 12 13 12 13Z"/>
+      </svg>
+      <span class="brand-name">Krishi Connect</span>
+    </div>
+    <nav class="main-nav" aria-label="Main">
+      <button class="nav-link active" data-view="home">Home</button>
+      <button class="nav-link" data-view="crop-advisor">Crop Advisor</button>
+      <button class="nav-link" data-view="irrigation">Smart Irrigation</button>
+      <button class="nav-link" data-view="pest-assistant">Pest &amp; Disease</button>
+      <button class="nav-link" data-view="chatbot">Krishi AI Chat</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= HOME ================= -->
+  <section id="view-home" class="view active">
+    <div class="hero">
+      <div class="hero-text">
+        <h1>Practical answers for four everyday farm decisions.</h1>
+        <p class="hero-sub">Tell it your soil, your land, and what you're seeing in the field — get a plain-language recommendation back, with the reasoning shown, not hidden.</p>
+      </div>
+    </div>
+
+    <div class="tool-list">
+      <button class="tool-row" data-view="crop-advisor">
+        <span class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 20V11"/>
+            <path d="M12 11C12 11 5 11.5 5 5C11.5 5 12 11 12 11Z"/>
+            <path d="M12 13C12 13 19 12.5 19 7C13 7 12 13 12 13Z"/>
+          </svg>
+        </span>
+        <span class="tool-text">
+          <span class="tool-title">Crop Advisor</span>
+          <span class="tool-desc">Tell us your soil, land size, and budget. Get crops that actually fit.</span>
+        </span>
+      </button>
+
+      <button class="tool-row" data-view="irrigation">
+        <span class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3C12 3 5 11 5 15.5C5 19.09 8.13 22 12 22C15.87 22 19 19.09 19 15.5C19 11 12 3 12 3Z"/>
+          </svg>
+        </span>
+        <span class="tool-text">
+          <span class="tool-title">Smart Irrigation</span>
+          <span class="tool-desc">Match your crop and region to the right watering method.</span>
+        </span>
+      </button>
+
+      <button class="tool-row" data-view="pest-assistant">
+        <span class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 13C4 7 9 3 19 3C19 13 15 19 9 19C6 19 4 16.5 4 13Z"/>
+            <path d="M19 3C19 3 10 5 6 15"/>
+            <circle cx="13" cy="9" r="1.1" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span class="tool-text">
+          <span class="tool-title">Pest &amp; Disease Assistant</span>
+          <span class="tool-desc">Describe the problem, or add a photo. Get a likely cause and what to do next.</span>
+        </span>
+      </button>
+
+      <button class="tool-row" data-view="chatbot">
+        <span class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 5H20V16H9L5 19.5V16H4V5Z"/>
+            <path d="M8 9.5H16"/>
+            <path d="M8 12.5H13"/>
+          </svg>
+        </span>
+        <span class="tool-text">
+          <span class="tool-title">Krishi AI Chat</span>
+          <span class="tool-desc">Ask any farming question, anytime.</span>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= CROP ADVISOR ================= -->
+  <section id="view-crop-advisor" class="view">
+    <h2>Crop Advisor</h2>
+    <p class="view-intro">Enter your field details and we'll match them against our crop database.</p>
+
+    <form id="crop-form" class="panel-form">
+      <div class="field">
+        <label for="crop-soil">Soil type</label>
+        <select id="crop-soil" required>
+          <option value="" disabled selected>Loading soil types…</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="crop-location">Location</label>
+        <input type="text" id="crop-location" placeholder="e.g. Aligarh, Uttar Pradesh" required>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="crop-size">Farm size (acres)</label>
+          <input type="number" id="crop-size" min="0.1" step="0.1" placeholder="e.g. 2" required>
+        </div>
+        <div class="field">
+          <label for="crop-budget">Budget (₹)</label>
+          <input type="number" id="crop-budget" min="1" step="500" placeholder="e.g. 30000" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary">Get Recommendation</button>
+    </form>
+
+    <div id="crop-status" class="status hidden"></div>
+    <div id="crop-results" class="results hidden"></div>
+  </section>
+
+  <!-- ================= SMART IRRIGATION ================= -->
+  <section id="view-irrigation" class="view">
+    <h2>Smart Irrigation</h2>
+    <p class="view-intro">Pick your crop and location, and we'll recommend an irrigation method.</p>
+
+    <form id="irrigation-form" class="panel-form">
+      <div class="field">
+        <label for="irrigation-location">Location</label>
+        <input type="text" id="irrigation-location" placeholder="e.g. Jaipur, Rajasthan" required>
+      </div>
+
+      <div class="field">
+        <label for="irrigation-crop">Crop</label>
+        <select id="irrigation-crop" required>
+          <option value="" disabled selected>Loading crops…</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary">Get Irrigation Plan</button>
+    </form>
+
+    <div id="irrigation-status" class="status hidden"></div>
+    <div id="irrigation-results" class="results hidden"></div>
+  </section>
+
+  <!-- ================= PEST & DISEASE ================= -->
+  <section id="view-pest-assistant" class="view">
+    <h2>Pest &amp; Disease Assistant</h2>
+    <p class="view-intro">Describe what you're seeing on the plant. A photo helps, but isn't required.</p>
+
+    <form id="pest-form" class="panel-form">
+      <div class="field">
+        <label for="pest-crop">Crop</label>
+        <select id="pest-crop" required>
+          <option value="" disabled selected>Loading crops…</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="pest-description">What are you seeing?</label>
+        <textarea id="pest-description" rows="4" placeholder="e.g. yellow curling leaves, small sticky patches, holes in the stem…" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="pest-image">Photo (optional)</label>
+        <input type="file" id="pest-image" accept="image/*">
+        <img id="pest-preview" class="image-preview hidden" alt="Preview of uploaded photo">
+      </div>
+
+      <button type="submit" class="btn-primary">Diagnose</button>
+    </form>
+
+    <div id="pest-status" class="status hidden"></div>
+    <div id="pest-results" class="results hidden"></div>
+  </section>
+
+  <!-- ================= CHATBOT ================= -->
+  <section id="view-chatbot" class="view">
+    <h2>Krishi AI Chat</h2>
+    <p class="view-intro">Ask about fertilizers, irrigation, soil health, schemes, or general farming — this is a rule-based assistant built for this project, not a general AI model.</p>
+
+    <div class="chat-panel">
+      <div id="chat-window" class="chat-window" aria-live="polite"></div>
+      <form id="chat-form" class="chat-input-row">
+        <input type="text" id="chat-input" placeholder="Type your question…" autocomplete="off" required>
+        <button type="submit" class="btn-primary">Send</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Krishi Connect is an educational mini-project. Recommendations are illustrative and not a substitute for professional agricultural advice — for real decisions, consult your local Krishi Vigyan Kendra or the Kisan Call Centre (1800-180-1551).</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,488 @@
+/* =====================================================================
+   KRISHI CONNECT — STYLESHEET
+   ---------------------------------------------------------------------
+   Organised top to bottom as:
+   1. Fonts + design tokens (CSS variables)
+   2. Reset / base element styles
+   3. Layout shell (header, nav, footer, .wrap container)
+   4. Home view (hero + tool list)
+   5. Forms (shared across all three tool panels)
+   6. Result panels (the "field note" cards showing recommendations)
+   7. Chat UI
+   8. Small utilities + responsive tweaks
+   ===================================================================== */
+
+/* ---------- 1. FONTS + DESIGN TOKENS ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Colour palette — pulled from the farm itself, not a generic UI kit */
+  --bg:         #EFF1E4;  /* pale sage paper, page background */
+  --panel:      #FBFAF4;  /* slightly lifted surface for forms/cards */
+  --ink:        #1E2A16;  /* deep leaf-black, primary text */
+  --ink-muted:  #55604A;  /* softened text for secondary copy */
+  --leaf:       #3D6B2C;  /* primary green — actions, active states */
+  --leaf-dark:  #2A4A1D;  /* hover/pressed state for leaf */
+  --soil:       #7A4A22;  /* earth brown — secondary accents */
+  --gold:       #B9860B;  /* turmeric gold — highlights, medium-risk */
+  --water:      #2F6F8F;  /* irrigation blue — used on the irrigation tool */
+  --danger:     #A33B2C;  /* high-risk / warnings */
+  --border:     rgba(30, 42, 22, 0.14);
+  --border-soft:rgba(30, 42, 22, 0.08);
+  --shadow:     0 1px 2px rgba(30, 42, 22, 0.06);
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Work Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --max-width: 880px;
+}
+
+/* ---------- 2. RESET / BASE ---------- */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 0.5em 0;
+  color: var(--ink);
+}
+
+h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 500; }
+h2 { font-size: 1.6rem; }
+
+p { margin: 0 0 1em 0; }
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; }
+
+a { color: var(--leaf); }
+
+/* Visible keyboard focus everywhere — accessibility floor, not optional */
+:focus-visible {
+  outline: 2px solid var(--leaf);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.hidden { display: none !important; }
+
+/* ---------- 3. LAYOUT SHELL ---------- */
+.site-header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-mark {
+  width: 26px;
+  height: 26px;
+  color: var(--leaf);
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.main-nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-muted);
+  font-weight: 500;
+  font-size: 0.92rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.nav-link:hover { color: var(--ink); }
+
+.nav-link.active {
+  color: var(--leaf);
+  border-bottom-color: var(--leaf);
+}
+
+main.wrap {
+  padding-top: 44px;
+  padding-bottom: 64px;
+  min-height: 60vh;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+.view-intro {
+  color: var(--ink-muted);
+  max-width: 60ch;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 22px 0 32px;
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  max-width: 70ch;
+}
+
+/* ---------- 4. HOME VIEW ---------- */
+.hero { padding-bottom: 36px; }
+
+.hero-text { max-width: 62ch; }
+
+.hero-sub {
+  font-size: 1.08rem;
+  color: var(--ink-muted);
+  max-width: 56ch;
+}
+
+.tool-list {
+  border-top: 1px solid var(--border);
+}
+
+.tool-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 4px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.tool-row:hover { background-color: var(--border-soft); }
+
+.tool-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--leaf);
+}
+
+.tool-icon svg { width: 20px; height: 20px; }
+
+.tool-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tool-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tool-desc {
+  font-size: 0.92rem;
+  color: var(--ink-muted);
+}
+
+/* ---------- 5. FORMS ---------- */
+.panel-form {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  max-width: 520px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.field-row {
+  display: flex;
+  gap: 16px;
+}
+
+label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+select,
+textarea {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  color: var(--ink);
+  width: 100%;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--leaf);
+}
+
+textarea { resize: vertical; min-height: 90px; font-family: var(--font-body); }
+
+.image-preview {
+  margin-top: 10px;
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  object-fit: cover;
+}
+
+.btn-primary {
+  align-self: flex-start;
+  background: var(--leaf);
+  color: #fff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color 0.15s ease;
+}
+
+.btn-primary:hover { background: var(--leaf-dark); }
+.btn-primary:disabled { background: var(--ink-muted); cursor: not-allowed; }
+
+/* ---------- 6. STATUS + RESULT PANELS ---------- */
+.status {
+  margin-top: 20px;
+  font-size: 0.92rem;
+  color: var(--ink-muted);
+  max-width: 520px;
+}
+
+.status.error { color: var(--danger); }
+
+.results {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 640px;
+}
+
+/* Each recommendation is a "field note": a flat card with a coloured
+   left stripe instead of a heavy drop shadow — this is the app's one
+   consistent structural device, and the stripe colour actually means
+   something (risk level / feature area) rather than decorating. */
+.note-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--leaf);
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+}
+
+.note-card.accent-gold { border-left-color: var(--gold); }
+.note-card.accent-water { border-left-color: var(--water); }
+.note-card.accent-danger { border-left-color: var(--danger); }
+
+.note-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.note-meta {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+
+.note-meta span + span::before {
+  content: "·";
+  margin: 0 6px;
+}
+
+.note-body p { margin: 0 0 8px 0; font-size: 0.95rem; }
+.note-body p:last-child { margin-bottom: 0; }
+
+.note-body ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+
+.note-body li { margin-bottom: 6px; font-size: 0.95rem; }
+
+.risk-tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+.risk-tag.risk-low { background: rgba(61, 107, 44, 0.14); color: var(--leaf-dark); }
+.risk-tag.risk-medium { background: rgba(185, 134, 11, 0.16); color: var(--gold); }
+.risk-tag.risk-high { background: rgba(163, 59, 44, 0.14); color: var(--danger); }
+.risk-tag.risk-unknown { background: rgba(30, 42, 22, 0.1); color: var(--ink-muted); }
+
+/* ---------- 7. CHAT UI ---------- */
+.chat-panel {
+  max-width: 640px;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.chat-window {
+  height: 420px;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-msg {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.chat-msg.bot {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 3px;
+}
+
+.chat-msg.user {
+  align-self: flex-end;
+  background: var(--leaf);
+  color: #fff;
+  border-bottom-right-radius: 3px;
+}
+
+.chat-msg-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin-bottom: 3px;
+}
+
+.chat-msg.user .chat-msg-label { color: rgba(255,255,255,0.75); }
+
+.chat-input-row {
+  display: flex;
+  gap: 10px;
+  padding: 14px;
+  border-top: 1px solid var(--border);
+  background: #fff;
+}
+
+.chat-input-row input {
+  flex: 1;
+  background: var(--bg);
+}
+
+/* ---------- 8. UTILITIES + RESPONSIVE ---------- */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border);
+  border-top-color: var(--leaf);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-right: 8px;
+  vertical-align: -2px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 640px) {
+  .header-inner { flex-direction: column; align-items: flex-start; }
+  .main-nav { gap: 2px; }
+  .nav-link { padding: 6px 8px; font-size: 0.85rem; }
+  .field-row { flex-direction: column; }
+  .panel-form { padding: 20px; }
+  .chat-msg { max-width: 88%; }
+}
