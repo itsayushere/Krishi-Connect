@@ -12,6 +12,26 @@ logic with ordinary Python — no server, no browser needed. Try running:
     python3 -c "from logic import recommend_crop; print(recommend_crop('Loamy', 'Aligarh, UP', 2, 30000))"
 """
 
+def keyword_score(keywords, text):
+    """Counts a match if every word in a keyword phrase shows up
+    anywhere in the text, in any order."""
+    text_words = set(text.lower().split())
+    score = 0
+    for phrase in keywords:
+        if all(word in text_words for word in phrase.lower().split()):
+            score += 1
+    return score
+
+
+
+
+
+
+
+
+
+
+
 import io
 from data import (
     CROP_DATABASE,
@@ -37,6 +57,7 @@ def find_rainfall_zone(location: str) -> str:
         if region_name in location_lower:
             return zone
     return "Medium"
+
 
 
 def find_crop(crop_name: str):
@@ -223,7 +244,7 @@ def diagnose_pest(crop: str, description: str, image_bytes: bytes = None) -> dic
         if not applies_to_this_crop:
             continue
 
-        score = sum(1 for keyword in entry["keywords"] if keyword in description_lower)
+        score = keyword_score(entry["keywords"], description)
         if score > best_score:
             best_score = score
             best_match = entry
